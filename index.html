@@ -19,11 +19,19 @@
     background-repeat: no-repeat; /* Ensures the image doesn't repeat */
     background-position: center; /* Centers the image */
 }
-        
-        canvas{
+canvas{
             box-shadow: black 20px 10px 50px;
 
         }
+    @media(max-width:600px){
+        canvas{
+            width: 100%; /* Make the canvas take full width of the screen */
+        height: auto; /* Maintain the aspect ratio by setting height to auto */
+        max-width: 100%; 
+            
+        }
+    }   
+        
     </style>
 </head>
 <body>
