@@ -161,6 +161,27 @@ function checkAppleCollision() {
 }
 
 /*document.body.addEventListener("keydown", keyDown);*/
+document.body.addEventListener("keydown", keyDown);
+
+function keyDown(event) {
+  // Prevent illegal moves (180-degree turns)
+  if (event.keyCode === 38 && yVelocity !== 1) {
+    inputsYVelocity = -1; // Up arrow
+    inputsXVelocity = 0;
+  }
+  if (event.keyCode === 40 && yVelocity !== -1) {
+    inputsYVelocity = 1; // Down arrow
+    inputsXVelocity = 0;
+  }
+  if (event.keyCode === 37 && xVelocity !== 1) {
+    inputsYVelocity = 0;
+    inputsXVelocity = -1; // Left arrow
+  }
+  if (event.keyCode === 39 && xVelocity !== -1) {
+    inputsYVelocity = 0;
+    inputsXVelocity = 1; // Right arrow
+  }
+}
 
 
 
@@ -234,11 +255,7 @@ function handleEnd() {
     }
 }
 
-// Function to move the snake based on direction
-/*function moveSnake(direction) {
-    console.log(`Moving ${direction}`);
-    // Add your snake movement logic here
-}*/
+
 // Function to move the snake based on direction (update velocity, not console)
 function moveSnake(direction) {
   // Check the current direction and prevent illegal moves (180° turns)
