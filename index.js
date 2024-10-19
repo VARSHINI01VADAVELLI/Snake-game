@@ -52,10 +52,10 @@ function drawGame() {
 
   drawScore();
 
-  if (score > 5) {
+  if (score > 2) {
     speed = 9;
   }
-  if (score > 10) {
+  if (score > 4) {
     speed = 11;
   }
 
@@ -160,40 +160,113 @@ function checkAppleCollision() {
   }
 }
 
-document.body.addEventListener("keydown", keyDown);
+/*document.body.addEventListener("keydown", keyDown);*/
 
-function keyDown(event) {
-  //up
-  if (event.keyCode == 38 || event.keyCode == 87) {
-    //87 is w
-    if (inputsYVelocity == 1) return;
-    inputsYVelocity = -1;
-    inputsXVelocity = 0;
-  }
 
-  //down
-  if (event.keyCode == 40 || event.keyCode == 83) {
-    // 83 is s
-    if (inputsYVelocity == -1) return;
-    inputsYVelocity = 1;
-    inputsXVelocity = 0;
-  }
 
-  //left
-  if (event.keyCode == 37 || event.keyCode == 65) {
-    // 65 is a
-    if (inputsXVelocity == 1) return;
-    inputsYVelocity = 0;
-    inputsXVelocity = -1;
-  }
+drawGame();
+function touchlisteners(){
+  // Variables to track touch or mouse position
+let startX = 0;
+let startY = 0;
+let endX = 0;
+let endY = 0;
 
-  //right
-  if (event.keyCode == 39 || event.keyCode == 68) {
-    //68 is d
-    if (inputsXVelocity == -1) return;
-    inputsYVelocity = 0;
-    inputsXVelocity = 1;
+// Detect whether the device is touch-capable
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Add listeners for touch or mouse events
+if (isTouchDevice) {
+    document.addEventListener('touchstart', handleStart, false);
+    document.addEventListener('touchmove', handleMove, false);
+    document.addEventListener('touchend', handleEnd, false);
+} else {
+    document.addEventListener('mousedown', handleStart, false);
+    document.addEventListener('mousemove', handleMove, false);
+    document.addEventListener('mouseup', handleEnd, false);
+}
+
+// Function to handle touch/mouse start
+function handleStart(event) {
+    if (event.type === 'touchstart') {
+        const touch = event.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+    } else {
+        startX = event.clientX;
+        startY = event.clientY;
+    }
+}
+
+// Function to handle touch/mouse move
+function handleMove(event) {
+    if (event.type === 'touchmove') {
+        const touch = event.touches[0];
+        endX = touch.clientX;
+        endY = touch.clientY;
+    } else {
+        endX = event.clientX;
+        endY = event.clientY;
+    }
+}
+
+// Function to handle touch/mouse end
+function handleEnd() {
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+            // Swipe right
+            moveSnake('right');
+        } else {
+            // Swipe left
+            moveSnake('left');
+        }
+    } else {
+        if (deltaY > 0) {
+            // Swipe down
+            moveSnake('down');
+        } else {
+            // Swipe up
+            moveSnake('up');
+        }
+    }
+}
+
+// Function to move the snake based on direction
+/*function moveSnake(direction) {
+    console.log(`Moving ${direction}`);
+    // Add your snake movement logic here
+}*/
+// Function to move the snake based on direction (update velocity, not console)
+function moveSnake(direction) {
+  // Check the current direction and prevent illegal moves (180° turns)
+  switch (direction) {
+      case 'up':
+          if (yVelocity == 1) return; // Prevent moving down if currently moving up
+          inputsYVelocity = -1;
+          inputsXVelocity = 0;
+          break;
+      case 'down':
+          if (yVelocity == -1) return; // Prevent moving up if currently moving down
+          inputsYVelocity = 1;
+          inputsXVelocity = 0;
+          break;
+      case 'left':
+          if (xVelocity == 1) return; // Prevent moving right if currently moving left
+          inputsYVelocity = 0;
+          inputsXVelocity = -1;
+          break;
+      case 'right':
+          if (xVelocity == -1) return; // Prevent moving left if currently moving right
+          inputsYVelocity = 0;
+          inputsXVelocity = 1;
+          break;
   }
 }
 
-drawGame();
+
+
+}
+touchlisteners();
